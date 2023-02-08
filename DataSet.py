@@ -60,7 +60,33 @@ class WaterTemperatureDataSet(nn.Module):
         test_dataset = self.frame_series(X_test, y_test)
 
 
-        train_iter = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, drop_last=True)
-        test_iter = DataLoader(test_dataset, batch_size=batch_size, shuffle=True, drop_last=True)
+        train_iter = DataLoader(train_dataset, batch_size=batch_size, shuffle=False, drop_last=False)
+        test_iter = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, drop_last=False)
 
         return train_iter, test_iter
+
+
+def visualize_tensor(serie):
+    print("number of points: ", len(serie))
+    days = np.arange(0, 365)
+    print(serie)
+
+    plt.scatter(days, serie[:, 1] - 273, marker="." )
+                  
+    plt.fill_between(days, serie[:, 1] - 273, serie[:, 0] - 273, color='red', alpha=0.5)
+
+    plt.fill_between(days, serie[:, 1] - 273, serie[:, 2] - 273, color='blue', alpha=0.5)
+
+    plt.title(f"Unknown year")
+    plt.xlabel("date")
+    plt.ylabel("Series temperature in °C")
+    plt.show()
+
+def visualize_target(target): 
+    days = np.arange(0, 365)
+    plt.plot(days, target)
+    plt.title(f"Unknown year")
+    plt.xlabel("date")
+    plt.ylabel("Target temperature in °C")
+    plt.show()
+
